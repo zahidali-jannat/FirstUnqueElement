@@ -1,0 +1,58 @@
+/*
+class Node {
+public:
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int x) {
+        data = x;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution {
+  public:
+    vector<int> bottomView(Node *root) {
+        // code here
+         map<int , int> mapped; // Col mapped
+        queue<pair<Node* , int>> q;
+        q.push({root , 0});
+        
+        vector<int> ans;
+        
+        if(root==nullptr)
+        {
+            return ans;
+        }
+        while(!q.empty()){
+            auto & [node , col]=q.front();
+            q.pop();
+            if(mapped.find(col)==mapped.end())
+            {
+               mapped[col]=node->data;
+            }
+           if(node->left!=nullptr)
+           {
+               q.push({node->left , col-1});
+               
+           }
+           if(node->right!=nullptr)
+           {
+               q.push({node->right , col+1});
+           }
+           if(mapped.find(col)!=mapped.end()){
+               mapped[col]=node->data;
+           }
+        }
+        
+        // now acces map for this 
+        for(auto &p:mapped)
+        {
+         ans.push_back(p.second);   
+        }
+        
+        return ans;
+    }
+};
