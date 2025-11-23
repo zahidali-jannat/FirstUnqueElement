@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+  bool findPath(TreeNode* root, TreeNode* target, stack<TreeNode*>& st) {
+    if (!root) return false;
+
+    st.push(root);
+
+    if (root == target) return true;
+
+    if (findPath(root->left, target, st) || findPath(root->right, target, st))
+        return true;
+
+    st.pop();
+    return false;
+}
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // this method which i am using i do not know whether it is correct or not
+        if( (root==p) || (root==q))
+        {
+         return root;
+        }
+        stack<TreeNode *> s1;
+        stack<TreeNode *> s2;
+        findPath(root , p , s1);
+        findPath(root , q , s2);
+        
+        vector<TreeNode *> v1;
+        vector<TreeNode *> v2;
+
+        while(!s1.empty()){
+            TreeNode *temp=s1.top();
+            v1.push_back(temp);
+            s1.pop();
+        }
+
+        while(!s2.empty()){
+            TreeNode *temp_=s2.top();
+            v2.push_back(temp_);
+            s2.pop();
+        }
+
+          reverse(v1.begin(), v1.end());
+         reverse(v2.begin(), v2.end());
+
+    TreeNode* ans = NULL;
+    int i = 0;
+
+    while (i < v1.size() && i < v2.size() && v1[i] == v2[i]) {
+        ans = v1[i];
+        i++;
+    }
+
+    return ans;
+
+    }
+};
